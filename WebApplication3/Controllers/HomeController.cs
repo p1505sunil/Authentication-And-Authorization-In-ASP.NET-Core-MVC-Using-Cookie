@@ -1,48 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CookieDemo.Controllers
-{
-    public class AccountController : Controller
-    {
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Login(string userName, string password)
-        {
-            if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
-            {
-                return RedirectToAction("Login");
-            }
-
-            //Check the user name and password  
-            //Here can be implemented checking logic from the database  
-
-            if (userName == "Admin" && password == "password")
-            {
-
-                //Create the identity for the user  
-                var identity = new ClaimsIdentity(new[] {
-                    new Claim(ClaimTypes.Name, userName)
-                }, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var principal = new ClaimsPrincipal(identity);
-
-                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View();
-        }
-    }
-}
+﻿@{  
+    ViewData["Title"] = "Login";  
+}  
+  
+<div class="container">  
+    <div class="row">          
+        <div class="col-md-3">  
+            <h2><strong>Login Page</strong></h2><br />  
+            <form asp-action= "login" method= "post" >
+                < div class="form-group">  
+                    <label>User Name</label>
+                    <input type = "text" class="form-control" id="userName" name="userName" placeholder="Enter user name">  
+                </div>  
+                <div class="form-group">  
+                    <label>Password</label>  
+                    <input type = "password" class="form-control" name="password" id="password" placeholder="Password">  
+                </div>  
+                <div class="form-check">  
+                    <button class="btn btn-info" type="reset">Reset</button>  
+                    <button type = "submit" class="btn btn-primary">Submit</button>  
+                </div>  
+            </form>  
+        </div>  
+    </div>  
+</div> 
